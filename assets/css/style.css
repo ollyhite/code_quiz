@@ -1,0 +1,140 @@
+:root{
+    --green: rgb(54, 156, 156);
+    --pink: rgb(226, 124, 114);
+    --white: white;
+    --lightgreen:rgb(64, 190, 190);
+}
+
+body{
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.main{
+    width: 80%;
+    height: 80%;
+    /* border: 1px solid pink; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.main h3{
+    margin: 0;
+}
+.timer{
+    position: absolute;
+    top: 0;
+    right: 2%;
+}
+.timer span{
+    margin-left: 10px;
+}
+.high-scores{
+    position: absolute;
+    top: 0;
+    left: 2%;
+    color: var(--green);
+}
+
+.high-scores:hover{
+    cursor: pointer;
+    color: var(--pink);
+}
+
+.start-btn{
+    width: 200px;
+    height: 50px;
+    margin-top: 50px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--green);
+    color: var(--white);
+    font-size: larger;
+}
+
+.start-btn:hover{
+    cursor: pointer;
+    background-color: var(--lightgreen);
+}
+
+.option-btn{
+    width: 50%;
+    height: 50px;
+    margin-top: 50px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--green);
+    color: var(--white);
+    font-size: larger;
+}
+
+.option-btn:hover{
+    cursor: pointer;
+    background-color: var(--lightgreen);
+}
+
+.enter-initial-form{
+    width: 50%;
+    /* border: 1px solid pink; */
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.enter-initial-form input{
+    width: 200px;
+    height: 25px;
+}
+.submit-btn{
+    width: 100px;
+    height: 30px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--green);
+    color: var(--white);
+}
+.submit-btn:hover {
+    cursor: pointer;
+    background-color: var(--lightgreen);
+}
+
+.btn-frame{
+    width: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.back-btn{
+    width: 100px;
+    height: 30px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--green);
+    color: var(--white);
+}
+
+.back-btn:hover {
+    cursor: pointer;
+    background-color: var(--lightgreen);
+}
+
+.clear-btn {
+    width: 120px;
+    height: 30px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--green);
+    color: var(--white);
+}
+
+.clear-btn:hover {
+    cursor: pointer;
+    background-color: var(--lightgreen);
+}
