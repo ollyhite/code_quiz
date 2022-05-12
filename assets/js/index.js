@@ -1,26 +1,21 @@
 var mainEl = document.querySelector(".main");
 var viewScorebtn = document.querySelector(".high-scores");
-var text1 = "Try to answer the following code-related questions within the time limit."
-var text2 = "Keep in mind that incorrect answers will penalize your score/time"
-var text3 = "by ten seconds!"
+var text = "Try to answer the following code-related questions within the time limit." + "\nKeep in mind that incorrect answers will penalize your score/time" +"\nby ten seconds!"
 var titleEl = document.createElement("h1");
 titleEl.textContent = "Code Quiz Chellenage";
 
 
-var introEl1 = document.createElement("h3");
-var introEl2 = document.createElement("h3");
-var introEl3 = document.createElement("h3");
+var introEl = document.createElement("h2");
+
 
 startPage();
 function startPage(){
 mainEl.innerHTML = ''
 mainEl.appendChild(titleEl);
-introEl1.textContent = text1;
-introEl2.textContent = text2;
-introEl3.textContent = text3;
-mainEl.appendChild(introEl1);
-mainEl.appendChild(introEl2);
-mainEl.appendChild(introEl3);
+
+introEl.innerText = text;
+mainEl.appendChild(introEl);
+
 
 var starPlayBtn=document.createElement("button");
 starPlayBtn.setAttribute("class", "start-btn")
@@ -66,9 +61,11 @@ function startGame(){
 
 var timeEl=document.querySelector(".timer-count");
 var secondsLeft = 75;
+var timerInterval;
 
 function timerStart(){
-        var timerInterval = setInterval(function(){
+        secondsLeft = 75;
+        timerInterval = setInterval(function(){
             secondsLeft--;
             timeEl.textContent = secondsLeft;
             if(secondsLeft === 0){
@@ -108,14 +105,17 @@ function checkAnswer(event){
     if(thisValue===answer){
         console.log("CORRECT!!!!");
         showAnswer.textContent = "CORRECT!!!!"
+        showAnswer.setAttribute("class","correct");
         mainEl.appendChild(showAnswer);
         //checkIfEnd(num);
 
     }else{
         console.log("WRONG!!!!");
         showAnswer.textContent = "WRONG!!!!"
+        showAnswer.setAttribute("class","wrong");
         mainEl.appendChild(showAnswer);
-        secondsLeft-5;
+        //decreaseScore(-5);
+        secondsLeft-=5;
         //checkIfEnd(num);
 
     }
@@ -127,34 +127,36 @@ function checkAnswer(event){
 
 
 
+var score;
 
 function checkIfEnd(num){
     if(num === quizQnA.length){
+        score=timeEl.textContent;
+        clearInterval(timerInterval);
         console.log("end");
-        showScore();
+        showScore(score);
     }else{
         showQnA(num)
     }
 }
 
-var score;
 var playerInitial;
 
-function showScore(){
+function showScore(score){
     mainEl.innerHTML = ''
     var titleEl = document.createElement("h1");
     titleEl.textContent = "All Done!!!";
     mainEl.appendChild(titleEl);
     var scoreEl = document.createElement("h3");
-    scoreEl.textContent = "Your final score is " +secondsLeft+ " .";
-    score=secondsLeft;
+    scoreEl.setAttribute("class", "score-text")
+    scoreEl.textContent = "Your final score is " + score + " .";
     mainEl.appendChild(scoreEl);
 
     var enterIniEl = document.createElement("form");
     enterIniEl.setAttribute("class", "enter-initial-form")
     mainEl.appendChild(enterIniEl);
 
-    var enterIniTitle =document.createElement("h2");
+    var enterIniTitle =document.createElement("h3");
     enterIniTitle.textContent="Enter initials:"
     enterIniEl.appendChild(enterIniTitle);
     var enterIniInput =document.createElement("input");
@@ -171,6 +173,7 @@ function showScore(){
 function saveScore(event){
     event.preventDefault()
     console.log("saveScore");
+    timeEl.textContent=0;
     var enterIniInputVal = document.getElementById('initail').value;
     console.log(enterIniInputVal);
     console.log(score);
@@ -186,40 +189,71 @@ function saveScore(event){
 
 function showScoreList(){
     mainEl.innerHTML = ''
+    timeEl.textContent=0;
+    clearInterval(timerInterval)
     var titleEl = document.createElement("h1");
     titleEl.textContent = "High Scores";
     mainEl.appendChild(titleEl);
     let newScoreList =localStorage.getItem("scoreList")
     newScoreList=JSON.parse(newScoreList);
     console.log(newScoreList);
-    for(var i=0; i<newScoreList.length; i++){
-        // console.log(optionItem);
-        var list = i+1;
-        var userName = newScoreList[i].userinitail;
-        var userScore = newScoreList[i].score;
-        eachScore = document.createElement("h3");
-        eachScore.textContent = list+ ". "+ userName+userScore;
-        mainEl.appendChild(eachScore)
-    }
+    var showScoreList = document.createElement("div");
+    showScoreList.setAttribute("class", "score-list");
+    mainEl.appendChild(showScoreList);
+
     var btmFrame = document.createElement("div");
     btmFrame.setAttribute("class", "btn-frame")
     mainEl.appendChild(btmFrame);
 
     var goHomeBtn = document.createElement("button");
     var clearScoreBtn = document.createElement("button");
-    goHomeBtn.textContent = "Play Again";
-    clearScoreBtn.textContent = "Clear high scores";
+    goHomeBtn.textContent = "Go Back";
+    clearScoreBtn.textContent = "Clear scores";
     goHomeBtn.setAttribute("class", "back-btn")
     clearScoreBtn.setAttribute("class", "clear-btn")
     btmFrame.appendChild(goHomeBtn);
     btmFrame.appendChild(clearScoreBtn);
 
+    //newScoreList probly is null(clean storage);
+    if(newScoreList){
+        //sort arry first score high -> low
+        var sortScoreList = newScoreList.sort((a, b) => parseFloat(b.score) - parseFloat(a.score));
+        console.log("sortScoreList",sortScoreList);
+        for(var i=0; i<sortScoreList.length; i++){
+        var list = i+1;
+        var userName = sortScoreList[i].userinitail;
+        var userScore = sortScoreList[i].score;
+        eachScore = document.createElement("h3");
+        eachScore.setAttribute("class","list-iem")
+        eachScore.textContent=list+ ". "
+        showScoreList.appendChild(eachScore)
+        var eachUserName = document.createElement("span");
+        var eachUserScore = document.createElement("span");
+        eachUserName.textContent=userName;
+        eachUserScore.textContent=userScore;
+        eachScore.appendChild(eachUserName)
+        eachScore.appendChild(eachUserScore)
+        }
+    var setWinner1Red = document.querySelector(".score-list").children[0];
+    setWinner1Red.setAttribute("style","color: var(--pink)");
+    if(newScoreList.length===2){
+        var setWiiner2Green = document.querySelector(".score-list").children[1];
+        setWiiner2Green.setAttribute("style","color: var(--green)");
+    }else if(newScoreList.length>2){
+        var setWiiner2Green = document.querySelector(".score-list").children[1];
+        setWiiner2Green.setAttribute("style","color: var(--green)");
+        var setWiiner2Green = document.querySelector(".score-list").children[2];
+        setWiiner2Green.setAttribute("style","color: var(--green)");
+    }
+}
+    
     goHomeBtn.addEventListener("click",startPage)
     clearScoreBtn.addEventListener("click",clearScore)
 }
 
 function clearScore(){
     localStorage.clear()
+    alert("The Scores History all Cleared")
     startPage();
 }
 viewScorebtn.addEventListener("click",showScoreList);
