@@ -6,7 +6,9 @@ https://ollyhite.github.io/code_quiz/
 
 ## Installation
 
-https://github.com/ollyhite/code_quiz.git
+```
+git clone https://github.com/ollyhite/code_quiz.git
+```
 
 ## Built With
 
